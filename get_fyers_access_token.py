@@ -50,7 +50,6 @@ def get_token():
     s.headers.update(headers)
 
     data1 = f'{{"fy_id":"{base64.b64encode(f"{username}".encode()).decode()}","app_id":"2"}}'
-
     r1 = s.post("https://api-t2.fyers.in/vagator/v2/send_login_otp_v2", data=data1)
 
     request_key = r1.json()["request_key"]
@@ -71,9 +70,7 @@ def get_token():
     parsed = urlparse(r4.json()["Url"])
     auth_code = parse_qs(parsed.query)["auth_code"][0]
 
-    session = fyersModel.SessionModel(
-        client_id=client_id, secret_key=secret_key, redirect_uri=redirect_uri, response_type="code", grant_type="authorization_code"
-    )
+    session = fyersModel.SessionModel(client_id=client_id, secret_key=secret_key, redirect_uri=redirect_uri, response_type="code", grant_type="authorization_code")
     session.set_token(auth_code)
     response = session.generate_token()
     return response["access_token"]
